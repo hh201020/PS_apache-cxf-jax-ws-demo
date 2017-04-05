@@ -7,6 +7,7 @@
     <packaging>war</packaging>
     <name>Simple CXF Java-first SOAP project using Spring configuration</name>
     <description>Simple CXF Java-first SOAP project using Spring configuration</description>
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.cxf</groupId>
