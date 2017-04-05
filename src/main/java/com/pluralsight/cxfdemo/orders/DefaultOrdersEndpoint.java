@@ -4,8 +4,6 @@ import javax.jws.WebService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.pluralsight.schema.order.AccountType;
-import com.pluralsight.schema.order.ObjectFactory;
 import com.pluralsight.schema.order.OrderInquiryResponseType;
 import com.pluralsight.schema.order.OrderInquiryType;
 import com.pluralsight.service.orders.Orders;
@@ -25,15 +23,21 @@ import com.pluralsight.service.orders.Orders;
       targetNamespace = "http://www.pluralsight.com/service/Orders/")
 public class DefaultOrdersEndpoint implements Orders {
 
+   // Autowire allows Spring to inject the order service containing core
+   // business logic.
+   @Autowired
+   private OrderService orderService;
+
    @Override
    public OrderInquiryResponseType processOrderPlacement(
          OrderInquiryType orderInquiry) {
 
-      ObjectFactory factory = new ObjectFactory();
-      OrderInquiryResponseType response = factory.createOrderInquiryResponseType();
-      AccountType account = factory.createAccountType();
-      account.setAccountId(1);
-      response.setAccount(account);
+      // This method is the implementation for processing an order. It is
+      // responsible for processing the message. At this time, it just routes
+      // the call to our business logic service to complete the task.
+      OrderInquiryResponseType response = orderService.processOrder(
+            orderInquiry.getUniqueOrderId(), orderInquiry.getOrderQuantity(),
+            orderInquiry.getAccountId(), orderInquiry.getEan13());
       return response;
    }
 
